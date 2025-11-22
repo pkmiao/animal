@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎来到pkmiao的游戏站点</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 设置字体为 Inter，中文会自动回退到系统默认字体 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: #ffffff; /* 白色背景 */
+            color: #1f2937; /* 深色文字以实现高对比度 */
+        }
+        /* 自定义关键帧动画：一个大的、持续的脉冲效果 */
+        @keyframes dramatic-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(100, 116, 139, 0.4); /* 灰色阴影 */
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 10px 30px rgba(100, 116, 139, 0.8);
+            }
+        }
+
+        /* 卡片悬停时的剧烈动画 */
+        .game-card:hover {
+            /* 鼠标悬停时，执行大幅度的缩放和旋转 */
+            transform: scale(1.05) rotate(1deg) translateY(-8px) !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* 更大的阴影 */
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        /* 应用持续的脉冲动画 */
+        .game-card {
+            animation: dramatic-pulse 4s infinite ease-in-out;
+            transition: all 0.3s ease;
+        }
+
+        /* 针对移动设备的响应式调整 */
+        @media (max-width: 640px) {
+            .game-card {
+                padding: 1.5rem; /* 增加移动端内边距 */
+            }
+        }
+
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-8">
+
+    <div class="max-w-6xl w-full text-center">
+        <!-- 标题 -->
+        <h1 class="text-4xl sm:text-6xl font-extrabold mb-12 text-gray-800 tracking-tight">
+            欢迎来到pkmiao的游戏站点，你需要什么？
+        </h1>
+
+        <!-- 卡片容器 -->
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+            
+            <!-- 1. 动物乐园卡片 -->
+            <a href="https://game.pkmiao.com/animal/" target="_blank" class="game-card block p-6 sm:p-10 rounded-3xl border-4 border-black bg-yellow-100 shadow-xl hover:shadow-2xl hover:bg-yellow-200 transform hover:rotate-1 transition-all duration-400 ease-in-out cursor-pointer group">
+                <div class="flex flex-col items-center">
+                    <!-- 动物图标 - 使用Emoji或SVG代替图片 -->
+                    <div class="text-6xl sm:text-8xl mb-4 transition-transform group-hover:scale-110">
+                        🐾
+                    </div>
+                    
+                    <h2 class="text-3xl sm:text-5xl font-black mb-4 text-black uppercase">
+                        动物乐园
+                    </h2>
+                    
+                    <p class="text-lg sm:text-2xl text-gray-700 font-semibold max-w-sm">
+                        和小动物一起玩耍吧
+                    </p>
+                    
+                    <!-- 链接指示器 -->
+                    <span class="mt-6 inline-block text-lg font-bold text-gray-900 group-hover:text-red-600 transition-colors">
+                        开始游戏 →
+                    </span>
+                </div>
+            </a>
+
+            <!-- 2. 都市摩天楼卡片 -->
+            <a href="https://game.pkmiao.com/tower/" target="_blank" class="game-card block p-6 sm:p-10 rounded-3xl border-4 border-black bg-blue-100 shadow-xl hover:shadow-2xl hover:-rotate-1 transform hover:scale-105 transition-all duration-400 ease-in-out cursor-pointer group">
+                <div class="flex flex-col items-center">
+                    <!-- 摩天楼图标 - 使用Emoji或SVG代替图片 -->
+                    <div class="text-6xl sm:text-8xl mb-4 transition-transform group-hover:translate-y-[-10px]">
+                        🏙️
+                    </div>
+                    
+                    <h2 class="text-3xl sm:text-5xl font-black mb-4 text-black uppercase">
+                        都市摩天楼
+                    </h2>
+                    
+                    <p class="text-lg sm:text-2xl text-gray-700 font-semibold max-w-sm">
+                        建设通往天际的高塔
+                    </p>
+                    
+                    <!-- 链接指示器 -->
+                    <span class="mt-6 inline-block text-lg font-bold text-gray-900 group-hover:text-green-600 transition-colors">
+                        开始建设 →
+                    </span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>

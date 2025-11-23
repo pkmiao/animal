@@ -4,25 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>欢迎来到pkmiao的游戏站点</title>
-    <!-- 引入 Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 设置字体为 Inter，中文会自动回退到系统默认字体 -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        /* --- 新增：背景呼吸光动画关键帧 --- */
+        @keyframes gradient-breathing {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
         body {
             font-family: 'Inter', system-ui, sans-serif;
-            background-color: #ffffff; /* 白色背景 */
+            /* --- 修改：替换掉原来的白色背景 --- */
+            /* background-color: #ffffff; */
+            
+            /* 设置马卡龙色系渐变背景 (柔粉, 嫩蓝, 薄荷绿, 浅紫) */
+            background: linear-gradient(-45deg, #ffdee9, #b5fffc, #c3f0c3, #e0c3fc);
+            /* 将背景尺寸放大，以便进行移动动画 */
+            background-size: 400% 400%;
+            /* 应用缓慢的呼吸动画，时长15秒，无限循环 */
+            animation: gradient-breathing 15s ease infinite;
+
             color: #1f2937; /* 深色文字以实现高对比度 */
         }
+
         /* 自定义关键帧动画：一个大的、持续的脉冲效果 */
         @keyframes dramatic-pulse {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(100, 116, 139, 0.4); /* 灰色阴影 */
+                /* 修改阴影颜色以适应新背景，使其更柔和 */
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
             }
             50% {
                 transform: scale(1.02);
-                box-shadow: 0 10px 30px rgba(100, 116, 139, 0.8);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             }
         }
 
@@ -30,7 +53,7 @@
         .game-card:hover {
             /* 鼠标悬停时，执行大幅度的缩放和旋转 */
             transform: scale(1.05) rotate(1deg) translateY(-8px) !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* 更大的阴影 */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* 调整阴影透明度 */
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             z-index: 10;
         }
@@ -39,7 +62,19 @@
         .game-card {
             animation: dramatic-pulse 4s infinite ease-in-out;
             transition: all 0.3s ease;
+            /* 稍微增加卡片的背景不透明度，使其在动态背景上更突出 */
+            background-color: rgba(255, 255, 255, 0.85); 
         }
+        
+        /* 针对特定卡片背景色的微调，叠加一层半透明白色，确保文字清晰 */
+        .game-card.bg-yellow-100 { background-color: rgba(254, 249, 195, 0.9); }
+        .game-card.bg-blue-100 { background-color: rgba(219, 234, 254, 0.9); }
+        .game-card.bg-pink-100 { background-color: rgba(252, 231, 243, 0.9); }
+        
+        .game-card.bg-yellow-100:hover { background-color: rgba(254, 240, 138, 0.95); }
+        .game-card.bg-blue-100:hover { background-color: rgba(191, 219, 254, 0.95); }
+        .game-card.bg-pink-100:hover { background-color: rgba(251, 207, 232, 0.95); }
+
 
         /* 针对移动设备的响应式调整 */
         @media (max-width: 640px) {
@@ -53,18 +88,14 @@
 <body class="min-h-screen flex items-center justify-center p-4 sm:p-8">
 
     <div class="max-w-7xl w-full text-center">
-        <!-- 标题 -->
-        <h1 class="text-3xl sm:text-5xl font-extrabold mb-10 text-gray-800 tracking-tight">
+        <h1 class="text-3xl sm:text-5xl font-extrabold mb-10 text-gray-800 tracking-tight drop-shadow-sm">
             欢迎来到pkmiao的游戏站点，你需要什么？
         </h1>
 
-        <!-- 卡片容器：改为 grid-cols-3 以容纳三个卡片，并调整间距 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             
-            <!-- 1. 动物乐园卡片 -->
             <a href="https://game.pkmiao.com/animal/" target="_blank" class="game-card block p-6 rounded-3xl border-4 border-black bg-yellow-100 shadow-xl hover:bg-yellow-200 transform hover:rotate-1 transition-all duration-400 ease-in-out cursor-pointer group flex flex-col justify-between h-full">
                 <div class="flex flex-col items-center flex-grow justify-center">
-                    <!-- 动物图标 -->
                     <div class="text-6xl mb-4 transition-transform group-hover:scale-110">
                         🐾
                     </div>
@@ -78,16 +109,13 @@
                     </p>
                 </div>
                 
-                <!-- 链接指示器 -->
                 <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-red-600 transition-colors">
                     开始游戏 →
                 </div>
             </a>
 
-            <!-- 2. 都市摩天楼卡片 -->
             <a href="https://game.pkmiao.com/tower/" target="_blank" class="game-card block p-6 rounded-3xl border-4 border-black bg-blue-100 shadow-xl hover:bg-blue-200 transform hover:-rotate-1 transition-all duration-400 ease-in-out cursor-pointer group flex flex-col justify-between h-full">
                 <div class="flex flex-col items-center flex-grow justify-center">
-                    <!-- 摩天楼图标 -->
                     <div class="text-6xl mb-4 transition-transform group-hover:translate-y-[-10px]">
                         🏙️
                     </div>
@@ -101,16 +129,13 @@
                     </p>
                 </div>
                 
-                <!-- 链接指示器 -->
                 <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-green-600 transition-colors">
                     开始建设 →
                 </div>
             </a>
 
-            <!-- 3. 奶龙大冒险卡片 (新增) -->
             <a href="https://game.pkmiao.com/nailong/" target="_blank" class="game-card block p-6 rounded-3xl border-4 border-black bg-pink-100 shadow-xl hover:bg-pink-200 transform hover:rotate-1 transition-all duration-400 ease-in-out cursor-pointer group flex flex-col justify-between h-full">
                 <div class="flex flex-col items-center flex-grow justify-center">
-                    <!-- 奶龙图标 - 使用恐龙 Emoji -->
                     <div class="text-6xl mb-4 transition-transform group-hover:scale-110 group-hover:rotate-12">
                         🦖
                     </div>
@@ -124,7 +149,6 @@
                     </p>
                 </div>
                 
-                <!-- 链接指示器 -->
                 <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
                     立即出发 →
                 </div>

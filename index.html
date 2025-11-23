@@ -8,65 +8,42 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-        /* --- 新增：背景呼吸光动画关键帧 --- */
+        /* --- 背景呼吸光动画 --- */
         @keyframes gradient-breathing {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         body {
             font-family: 'Inter', system-ui, sans-serif;
-            /* --- 修改：替换掉原来的白色背景 --- */
-            /* background-color: #ffffff; */
-            
-            /* 设置马卡龙色系渐变背景 (柔粉, 嫩蓝, 薄荷绿, 浅紫) */
+            /* 马卡龙色系渐变背景 */
             background: linear-gradient(-45deg, #ffdee9, #b5fffc, #c3f0c3, #e0c3fc);
-            /* 将背景尺寸放大，以便进行移动动画 */
             background-size: 400% 400%;
-            /* 应用呼吸动画，时长3秒，无限循环 */
-            animation: gradient-breathing 3s ease infinite;
-
-            color: #1f2937; /* 深色文字以实现高对比度 */
+            animation: gradient-breathing 10s ease infinite;
+            color: #1f2937;
         }
 
-        /* 自定义关键帧动画：一个大的、持续的脉冲效果 */
+        /* 卡片脉冲动画 */
         @keyframes dramatic-pulse {
-            0%, 100% {
-                transform: scale(1);
-                /* 修改阴影颜色以适应新背景，使其更柔和 */
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
-            }
-            50% {
-                transform: scale(1.02);
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-            }
+            0%, 100% { transform: scale(1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+            50% { transform: scale(1.02); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); }
         }
 
-        /* 卡片悬停时的剧烈动画 */
         .game-card:hover {
-            /* 鼠标悬停时，执行大幅度的缩放和旋转 */
             transform: scale(1.05) rotate(1deg) translateY(-8px) !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* 调整阴影透明度 */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             z-index: 10;
         }
         
-        /* 应用持续的脉冲动画 */
         .game-card {
             animation: dramatic-pulse 4s infinite ease-in-out;
             transition: all 0.3s ease;
-            /* 稍微增加卡片的背景不透明度，使其在动态背景上更突出 */
             background-color: rgba(255, 255, 255, 0.85); 
         }
         
-        /* 针对特定卡片背景色的微调，叠加一层半透明白色，确保文字清晰 */
+        /* 针对特定卡片背景色的微调 */
         .game-card.bg-yellow-100 { background-color: rgba(254, 249, 195, 0.9); }
         .game-card.bg-blue-100 { background-color: rgba(219, 234, 254, 0.9); }
         .game-card.bg-pink-100 { background-color: rgba(252, 231, 243, 0.9); }
@@ -75,18 +52,78 @@
         .game-card.bg-blue-100:hover { background-color: rgba(191, 219, 254, 0.95); }
         .game-card.bg-pink-100:hover { background-color: rgba(251, 207, 232, 0.95); }
 
-
-        /* 针对移动设备的响应式调整 */
         @media (max-width: 640px) {
-            .game-card {
-                padding: 1.5rem; /* 增加移动端内边距 */
-            }
+            .game-card { padding: 1.5rem; }
         }
-
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 sm:p-8">
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-8 relative">
 
+    <audio id="bg-music" loop autoplay>
+        <source src="https://game.pkmiao.com/bf6op.mp3" type="audio/mpeg">
+        您的浏览器不支持 audio 元素。
+    </audio>
+
+    <button id="music-btn" class="fixed top-[66px] right-4 z-50 p-3 rounded-full bg-white/60 hover:bg-white/90 backdrop-blur-md shadow-lg transition-all duration-300 group border-2 border-white/50" onclick="toggleMusic()">
+        
+        <div class="text-gray-500 group-hover:text-gray-800 transition-colors w-6 h-6 flex items-center justify-center">
+            
+            <svg id="icon-play" class="hidden w-full h-full fill-current" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+
+            <svg id="icon-pause" class="w-full h-full fill-current" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
+            
+        </div>
+    </button>
+
+    <script>
+        const music = document.getElementById('bg-music');
+        const iconPlay = document.getElementById('icon-play');
+        const iconPause = document.getElementById('icon-pause');
+        const musicBtn = document.getElementById('music-btn');
+        
+        let isPlaying = true;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var playPromise = music.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    console.log("Autoplay started");
+                    musicBtn.classList.add('animate-spin-slow'); 
+                })
+                .catch(error => {
+                    console.log("Autoplay prevented. Waiting for user interaction.");
+                    isPlaying = false;
+                    updateIcons();
+                });
+            }
+        });
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+            } else {
+                music.play();
+                isPlaying = true;
+            }
+            updateIcons();
+        }
+
+        function updateIcons() {
+            if (isPlaying) {
+                iconPlay.classList.add('hidden');
+                iconPause.classList.remove('hidden');
+            } else {
+                iconPlay.classList.remove('hidden');
+                iconPause.classList.add('hidden');
+            }
+        }
+    </script>
     <div class="max-w-7xl w-full text-center">
         <h1 class="text-3xl sm:text-5xl font-extrabold mb-10 text-gray-800 tracking-tight drop-shadow-sm">
             欢迎来到pkmiao的游戏站点，你需要什么？
@@ -96,62 +133,29 @@
             
             <a href="https://game.pkmiao.com/animal/" target="_blank" class="game-card block p-6 rounded-3xl border-4 border-black bg-yellow-100 shadow-xl hover:bg-yellow-200 transform hover:rotate-1 transition-all duration-400 ease-in-out cursor-pointer group flex flex-col justify-between h-full">
                 <div class="flex flex-col items-center flex-grow justify-center">
-                    <div class="text-6xl mb-4 transition-transform group-hover:scale-110">
-                        🐾
-                    </div>
-                    
-                    <h2 class="text-2xl sm:text-3xl font-black mb-3 text-black uppercase">
-                        动物乐园
-                    </h2>
-                    
-                    <p class="text-base sm:text-lg text-gray-700 font-semibold">
-                        和小动物一起玩耍吧
-                    </p>
+                    <div class="text-6xl mb-4 transition-transform group-hover:scale-110">🐾</div>
+                    <h2 class="text-2xl sm:text-3xl font-black mb-3 text-black uppercase">动物乐园</h2>
+                    <p class="text-base sm:text-lg text-gray-700 font-semibold">和小动物一起玩耍吧</p>
                 </div>
-                
-                <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-red-600 transition-colors">
-                    开始游戏 →
-                </div>
+                <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-red-600 transition-colors">开始游戏 →</div>
             </a>
 
             <a href="https://game.pkmiao.com/tower/" target="_blank" class="game-card block p-6 rounded-3xl border-4 border-black bg-blue-100 shadow-xl hover:bg-blue-200 transform hover:-rotate-1 transition-all duration-400 ease-in-out cursor-pointer group flex flex-col justify-between h-full">
                 <div class="flex flex-col items-center flex-grow justify-center">
-                    <div class="text-6xl mb-4 transition-transform group-hover:translate-y-[-10px]">
-                        🏙️
-                    </div>
-                    
-                    <h2 class="text-2xl sm:text-3xl font-black mb-3 text-black uppercase">
-                        都市摩天楼
-                    </h2>
-                    
-                    <p class="text-base sm:text-lg text-gray-700 font-semibold">
-                        建设通往天际的高塔
-                    </p>
+                    <div class="text-6xl mb-4 transition-transform group-hover:translate-y-[-10px]">🏙️</div>
+                    <h2 class="text-2xl sm:text-3xl font-black mb-3 text-black uppercase">都市摩天楼</h2>
+                    <p class="text-base sm:text-lg text-gray-700 font-semibold">建设通往天际的高塔</p>
                 </div>
-                
-                <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-green-600 transition-colors">
-                    开始建设 →
-                </div>
+                <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-green-600 transition-colors">开始建设 →</div>
             </a>
 
             <a href="https://game.pkmiao.com/nailong/" target="_blank" class="game-card block p-6 rounded-3xl border-4 border-black bg-pink-100 shadow-xl hover:bg-pink-200 transform hover:rotate-1 transition-all duration-400 ease-in-out cursor-pointer group flex flex-col justify-between h-full">
                 <div class="flex flex-col items-center flex-grow justify-center">
-                    <div class="text-6xl mb-4 transition-transform group-hover:scale-110 group-hover:rotate-12">
-                        🦖
-                    </div>
-                    
-                    <h2 class="text-2xl sm:text-3xl font-black mb-3 text-black uppercase">
-                        奶龙大冒险
-                    </h2>
-                    
-                    <p class="text-base sm:text-lg text-gray-700 font-semibold">
-                        体验奶龙的一天
-                    </p>
+                    <div class="text-6xl mb-4 transition-transform group-hover:scale-110 group-hover:rotate-12">🦖</div>
+                    <h2 class="text-2xl sm:text-3xl font-black mb-3 text-black uppercase">奶龙大冒险</h2>
+                    <p class="text-base sm:text-lg text-gray-700 font-semibold">体验奶龙的一天</p>
                 </div>
-                
-                <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
-                    立即出发 →
-                </div>
+                <div class="mt-6 text-base font-bold text-gray-900 group-hover:text-purple-600 transition-colors">立即出发 →</div>
             </a>
 
         </div>
@@ -159,4 +163,3 @@
 
 </body>
 </html>
-

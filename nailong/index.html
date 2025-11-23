@@ -40,7 +40,7 @@
         
         #characters {
             position: absolute;
-            bottom: 45%; /* 上移200px */
+            bottom: 45%;
             width: 100%;
             height: 45%;
             display: flex;
@@ -65,13 +65,14 @@
         
         #dialogue-box {
             position: absolute;
-            bottom: 25%; /* 上移200px */
+            bottom: 25%;
             width: 90%;
             left: 5%;
             background-color: rgba(255, 255, 255, 0.95);
             border: 3px solid #FF9800;
             border-radius: 15px;
-            padding: 20px;
+            /* 修改1：增加了底部内边距，从20px改为70px，为按钮腾出更多空间 */
+            padding: 20px 20px 70px 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             transform: translateY(100%);
             transition: transform 0.3s ease;
@@ -99,11 +100,11 @@
         #next-btn {
             position: absolute;
             right: 20px;
-            bottom: 20px;
+            bottom: 20px; /* 保持在底部，但因为盒子变高了，视觉上离文字更远了 */
             background-color: #FF9800;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 8px 20px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
@@ -112,6 +113,28 @@
         
         #next-btn:hover {
             background-color: #F57C00;
+        }
+
+        /* 修改2：新增重新开始按钮的样式 */
+        #restart-btn {
+            display: block; /* 块级元素以便居中 */
+            margin: 20px auto 0 auto; /* 上边距20px，左右自动居中 */
+            background-color: #4CAF50; /*以此绿色区别于继续按钮，代表新生 */
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px; /* 圆角更大，更好看 */
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* 添加阴影 */
+            transition: all 0.3s ease;
+        }
+
+        #restart-btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px); /* 鼠标悬停时微微上浮 */
+            box-shadow: 0 6px 8px rgba(0,0,0,0.3);
         }
         
         #title-screen {
@@ -157,13 +180,7 @@
             display: none !important;
         }
         
-        /* 像素风格调整 */
-        .pixelated {
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: pixelated;
-        }
-        
-        /* 添加一些装饰元素 */
+        /* 装饰元素 */
         .cloud {
             position: absolute;
             background-color: white;
@@ -197,67 +214,43 @@
     <div id="game-container">
         <div id="background"></div>
         
-        <!-- 装饰云朵 -->
         <div class="cloud cloud-1"></div>
         <div class="cloud cloud-2"></div>
         <div class="cloud cloud-3"></div>
         
         <div id="characters">
             <div id="character1" class="character">
-                <!-- 奶龙SVG -->
                 <svg width="200" height="200" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                    <!-- 身体 - 纯黄色 -->
                     <ellipse cx="200" cy="260" rx="90" ry="100" fill="#FFEB3B" stroke="#FFC107" stroke-width="2"/>
-                    
-                    <!-- 肚子 - 纯白色 -->
                     <ellipse cx="200" cy="270" rx="60" ry="70" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
-                    
-                    <!-- 头部 - 纯黄色 -->
                     <ellipse cx="200" cy="150" rx="85" ry="90" fill="#FFEB3B" stroke="#FFC107" stroke-width="2"/>
-                    
-                    <!-- 眼睛 - 白色眼白 -->
                     <ellipse cx="170" cy="130" rx="22" ry="35" fill="#FFFFFF"/>
                     <ellipse cx="230" cy="130" rx="22" ry="35" fill="#FFFFFF"/>
-                    
-                    <!-- 虹膜 - 墨绿色 -->
                     <ellipse cx="170" cy="135" rx="15" ry="20" fill="#006400"/>
                     <ellipse cx="230" cy="135" rx="15" ry="20" fill="#006400"/>
-                    
-                    <!-- 瞳孔 - 黑色 -->
                     <ellipse cx="170" cy="135" rx="8" ry="12" fill="#000000"/>
                     <ellipse cx="230" cy="135" rx="8" ry="12" fill="#000000"/>
-                    
-                    <!-- 嘴巴 -->
                     <path d="M 175 180 Q 200 210 225 180" stroke="#FF5722" stroke-width="4" fill="none" stroke-linecap="round"/>
-                    
-                    <!-- 手臂 -->
                     <ellipse cx="130" cy="220" rx="20" ry="35" fill="#FFEB3B" stroke="#FFC107" stroke-width="2"/>
                     <ellipse cx="270" cy="220" rx="20" ry="35" fill="#FFEB3B" stroke="#FFC107" stroke-width="2"/>
-                    
-                    <!-- 腿 -->
                     <ellipse cx="140" cy="350" rx="25" ry="25" fill="#FFEB3B" stroke="#FFC107" stroke-width="2"/>
                     <ellipse cx="260" cy="350" rx="25" ry="25" fill="#FFEB3B" stroke="#FFC107" stroke-width="2"/>
                 </svg>
             </div>
             <div id="character2" class="character">
-                <!-- 小黄SVG -->
                 <svg width="200" height="200" viewBox="0 0 160 150" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100 85 Q110 75 115 65" fill="none" stroke="#DEB887" stroke-width="6" stroke-linecap="round" transform="rotate(-5, 100, 85)">
                         <animate attributeName="d" values="M100 85 Q110 75 115 65; M100 85 Q110 90 115 70; M100 85 Q110 75 115 65" dur="1s" repeatCount="indefinite"/>
                     </path>
-                    
                     <rect x="55" y="110" width="18" height="30" rx="8" fill="#DEB887" stroke="#8B4513" stroke-width="2" opacity="0.8"/>
                     <rect x="85" y="110" width="18" height="30" rx="8" fill="#DEB887" stroke="#8B4513" stroke-width="2" opacity="0.8"/>
-                    
                     <rect x="45" y="65" width="70" height="55" rx="25" fill="#DEB887" stroke="#8B4513" stroke-width="2"/>
-                    
                     <g class="paw-group left-paw-group">
                         <rect x="55" y="90" width="18" height="35" rx="8" fill="#DEB887" stroke="#8B4513" stroke-width="2"/>
                     </g>
                     <g class="paw-group right-paw-group">
                         <rect x="85" y="90" width="18" height="35" rx="8" fill="#DEB887" stroke="#8B4513" stroke-width="2"/>
                     </g>
-                    
                     <circle cx="80" cy="50" r="30" fill="#DEB887" stroke="#8B4513" stroke-width="2"/>
                     <path d="M60 30 Q40 50 55 70 L65 45 Z" fill="#8B4513" stroke="#8B4513" stroke-width="2"/>
                     <path d="M100 30 Q120 50 105 70 L95 45 Z" fill="#8B4513" stroke="#8B4513" stroke-width="2"/>
@@ -343,37 +336,26 @@
 
         // 初始化游戏
         function initGame() {
-            // 隐藏标题屏幕
             titleScreen.classList.add('hidden');
-            
-            // 显示对话框
             dialogueBox.classList.add('show');
-            
-            // 加载第一个场景
             loadScene(0);
         }
 
         // 加载场景
         function loadScene(sceneIndex) {
             const scene = gameData.scenes[sceneIndex];
-            
-            // 更新背景
             background.style.background = scene.background;
             
-            // 隐藏所有角色
             characters.forEach(char => {
                 char.classList.remove('active');
                 char.style.left = '50%';
                 char.style.transform = 'translateX(-50%) scale(0.9)';
             });
             
-            // 显示场景中的角色
             scene.characters.forEach(charData => {
                 const charElement = document.getElementById(charData.id);
                 if (charElement && charData.active) {
                     charElement.classList.add('active');
-                    
-                    // 设置角色位置
                     if (charData.position === 'left') {
                         charElement.style.left = '25%';
                     } else if (charData.position === 'right') {
@@ -384,10 +366,7 @@
                 }
             });
             
-            // 重置对话索引
             currentDialogueIndex = 0;
-            
-            // 开始对话
             startDialogue(sceneIndex);
         }
 
@@ -395,8 +374,6 @@
         function startDialogue(sceneIndex) {
             const scene = gameData.scenes[sceneIndex];
             isDialogueActive = true;
-            
-            // 显示第一条对话
             showDialogue(scene.dialogue[currentDialogueIndex]);
         }
 
@@ -410,32 +387,31 @@
         function nextStep() {
             const scene = gameData.scenes[gameData.currentScene];
             
-            // 如果还有对话，显示下一个对话
             if (currentDialogueIndex < scene.dialogue.length - 1) {
                 currentDialogueIndex++;
                 showDialogue(scene.dialogue[currentDialogueIndex]);
             } 
-            // 否则，加载下一个场景
             else if (gameData.currentScene < gameData.scenes.length - 1) {
                 gameData.currentScene++;
                 loadScene(gameData.currentScene);
             }
-            // 游戏结束
             else {
                 endGame();
             }
         }
 
-        // 游戏结束
+        // 游戏结束 - 这里调整了文字居中
         function endGame() {
             dialogueBox.innerHTML = `
-                <div id="name">游戏结束</div>
-                <div id="text">感谢您游玩奶龙大冒险！</div>
-                <button id="restart-btn">重新开始</button>
+                <div style="text-align: center;">
+                    <div id="name" style="display: inline-block; border-bottom: none; font-size: 1.5em;">游戏结束</div>
+                    <div id="text" style="min-height: auto; margin-bottom: 10px;">感谢您游玩奶龙大冒险！</div>
+                    <button id="restart-btn">重新开始</button>
+                </div>
             `;
             
             document.getElementById('restart-btn').addEventListener('click', () => {
-                location.reload(); // 直接重新载入网页
+                location.reload();
             });
         }
 
